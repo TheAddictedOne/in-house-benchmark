@@ -1,0 +1,50 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+h1,
+h2 {
+  margin: 20px;
+  text-align: center;
+}
+code {
+  background-color: #eee;
+  border: #aaa 1px solid;
+  border-radius: 5px;
+  color: red;
+  margin: 0px 5px;
+  padding: 4px 10px;
+}
+.players {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.player {
+  flex: 1;
+  margin: 20px;
+}
+.player-perf {
+  align-items: center;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+}
+.logs {
+  margin: 0 auto;
+  width: 400px;
+}
+.log-header {
+  font-weight: bold;
+  padding: 0 20px;
+}
+.log-row {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+}
+.font-mono {
+  font-family: monospace;
+}
