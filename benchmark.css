@@ -25,11 +25,8 @@ code {
   flex: 1;
   margin: 20px;
 }
-.player-perf {
-  align-items: center;
-  display: flex;
-  height: 50px;
-  justify-content: center;
+.perfs {
+  height: 200px;
 }
 .logs {
   margin: 0 auto;
