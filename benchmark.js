@@ -10,7 +10,7 @@
   /**
    * Load DM script
    */
-  const load_dm_script = async () => {
+  const load_dm_script = async (id) => {
     log_mark(performance.mark('dm_script_start'))
     return new Promise((resolve) => {
       const onLoad = () => {
@@ -18,7 +18,8 @@
         resolve()
       }
       const script = document.createElement('script')
-      script.src = 'https://geo.dailymotion.com/libs/player/x136j6.js'
+      script.src = `https://geo.dailymotion.com/libs/player/${id}.js`
+      document.querySelector('#dm-script-src').innerHTML = `<code>${script.src}</code>`
       script.onload = onLoad
       document.head.appendChild(script)
     })
@@ -55,6 +56,7 @@
       }
       const script = document.createElement('script')
       script.src = 'https://content.jwplatform.com/libraries/IDzF9Zmk.js'
+      document.querySelector('#jw-script-src').innerHTML = `<code>${script.src}</code>`
       script.onload = onLoad
       document.head.appendChild(script)
     })
@@ -118,8 +120,10 @@
   // │ Runtime                                                                                       │
   // │                                                                                               │
   // └───────────────────────────────────────────────────────────────────────────────────────────────┘
+  const params = new URLSearchParams(document.location.search)
+  const id = params.get('id') || 'x136j6'
   log_mark(performance.mark('origin', { startTime: 0 }))
-  await load_dm_script()
+  await load_dm_script(id)
   await start_dm_player()
   await load_jw_script()
   await start_jw_player()
