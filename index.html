@@ -5,10 +5,23 @@
   </head>
   <body>
     <h1>Comparing DM vs JW performance</h1>
+    <section class="options">
+      <h1>Options</h1>
+      <div class="option">
+        <label for="preset">Preset:</label>
+        <select id="preset">
+          <option value="adless">Adless (comparison between script_start and TTFF)</option>
+          <option value="preroll">
+            With preroll (comparison between script_start and ad_impression)
+          </option>
+        </select>
+      </div>
+    </section>
+
     <section class="players">
       <div class="player">
         <h2>Dailymotion</h2>
-        <h3 id="dm-script-src"></h3>
+        <h3 id="dm-script-src" class="ellipsis"></h3>
         <div id="dm-player"></div>
         <div id="dm-diff" class="logs perfs">
           <div class="log-header log-row">
@@ -19,7 +32,7 @@
       </div>
       <div class="player">
         <h2>JW</h2>
-        <h3 id="jw-script-src"></h3>
+        <h3 id="jw-script-src" class="ellipsis"></h3>
         <div id="jw-player"></div>
         <div id="jw-diff" class="logs">
           <div class="log-header log-row">
@@ -35,6 +48,10 @@
         <div class="log-header log-row">
           <div>Marks</div>
           <div>Starts at</div>
+        </div>
+        <div class="log-row">
+          <span><code>origin</code></span>
+          <span class="font-mono">0ms</span>
         </div>
       </div>
     </section>

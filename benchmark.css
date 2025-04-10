@@ -1,6 +1,7 @@
 body {
   font-family: sans-serif;
   margin: 0;
+  min-width: 1024px;
 }
 h1,
 h2,
@@ -18,6 +19,17 @@ code {
   margin: 0px 5px;
   padding: 4px 10px;
 }
+select {
+  height: 100%;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.option {
+  height: 40px;
+}
 .players {
   align-items: stretch;
   display: flex;
@@ -26,7 +38,7 @@ code {
 }
 .player {
   flex: 1;
-  margin: 20px;
+  padding: 10px;
 }
 .perfs {
   height: 200px;
@@ -47,4 +59,7 @@ code {
 }
 .font-mono {
   font-family: monospace;
+}
+.ellipsis {
+  overflow: hidden;
 }
