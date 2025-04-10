@@ -31,7 +31,7 @@
   const start_dm_player = async () => {
     log_mark(performance.mark('dm_player_start'))
     return new Promise(async (resolve) => {
-      const player = await dailymotion.createPlayer('dm-player', { video: 'x9hhim0' })
+      const player = await dailymotion.createPlayer('dm-player', { video: 'x9hnw4q' })
       player.on(
         dailymotion.events.VIDEO_PLAYING,
         () => {
@@ -70,8 +70,7 @@
     return new Promise(async (resolve) => {
       const jwPlayer = await jwplayer('jw-player').setup({
         autostart: true,
-        playlist: 'https://cdn.jwplayer.com/v2/media/hWF9vG66', // Big Buck Bunny
-        // playlist: "https://cdn.jwplayer.com/v2/media/pjntNKMa", // Video from NewsCorp benchmark
+        file: 'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
       })
       jwPlayer.once('firstFrame', () => {
         log_mark(performance.mark('jw_player_end'))
