@@ -18,7 +18,7 @@
   }
 
   const save_mark = (name) => {
-    document.querySelector('#current-step').innerHTML = `Save ${name} timestamp ...`
+    document.querySelector('#current-step').innerHTML = `Saving <code>${name}</code> mark ...`
     const mark = performance.mark(name)
     marks[name] = mark // Save mark in upper scope for later usage
     document.querySelector('#logs').innerHTML += `<div class="log-row">
@@ -166,7 +166,8 @@
     log_total('#jw-diff', marks.jw_script_start, marks.jw_ttff)
     save_in_local_storage()
     window.log_averages()
-    document.querySelector('#current-step').innerHTML = `Benchmark done ✔`
+    document.querySelector('#loader').innerHTML = `<div>Benchmark done ✔</div>`
+    document.querySelector('#current-step').innerHTML = `See metrics`
   }
 
   const run_preroll_routine = async (id) => {

@@ -13,7 +13,7 @@ section {
   padding: 20px 0;
 }
 section:nth-child(even) {
-  background: #eee;
+  background: #fafafa;
 }
 h1 {
   text-align: center;
@@ -39,6 +39,7 @@ select {
   padding: 0 10px;
 }
 details {
+  margin: 20px 0 0 0;
   text-align: center;
 }
 summary {
@@ -62,6 +63,7 @@ summary {
 .option {
   height: 40px;
 }
+
 .players {
   align-items: stretch;
   display: flex;
@@ -70,10 +72,14 @@ summary {
 }
 .player {
   flex: 1;
-  padding: 10px;
+  padding: 0 10px;
 }
-.perfs {
-  height: 200px;
+.player-src {
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
 }
 .logs {
   margin: 0 auto;
@@ -92,6 +98,15 @@ summary {
 .font-mono {
   font-family: monospace;
 }
-.ellipsis {
-  overflow: hidden;
+.loader {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.loader img {
+  display: block;
+  width: 40px;
+  height: 40px;
 }
