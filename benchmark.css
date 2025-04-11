@@ -1,15 +1,27 @@
-body {
-  font-family: sans-serif;
-  margin: 0;
-  min-width: 1024px;
+@font-face {
+  font-family: 'ABCFavorit';
+  font-weight: normal;
+  src: url('https://static1.dmcdn.net/ABCFavorit-Regular.woff2') format('woff2');
+  font-display: swap;
 }
-h1,
-h2,
-h3 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
+
+body {
+  font-family: ABCFavorit;
+  margin: 0;
+}
+section {
+  padding: 20px 0;
+}
+section:nth-child(even) {
+  background: #eee;
+}
+h1 {
+  text-align: center;
+  margin: 0;
+}
+h2 {
+  margin: 0 0 20px;
+  text-align: center;
 }
 code {
   background-color: #eee;
@@ -19,9 +31,23 @@ code {
   margin: 0px 5px;
   padding: 4px 10px;
 }
+label {
+  margin: 0 20px 0 0;
+}
 select {
   height: 100%;
+  padding: 0 10px;
 }
+
+.header {
+  background-color: black;
+  color: white;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .options {
   display: flex;
   flex-direction: column;
