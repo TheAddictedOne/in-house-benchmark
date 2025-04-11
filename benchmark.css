@@ -38,6 +38,12 @@ select {
   height: 100%;
   padding: 0 10px;
 }
+details {
+  text-align: center;
+}
+summary {
+  cursor: pointer;
+}
 
 .header {
   background-color: black;
