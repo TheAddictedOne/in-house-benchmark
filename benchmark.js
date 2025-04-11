@@ -163,6 +163,8 @@
     log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
     log_diff('#jw-diff', marks.jw_player_start, marks.jw_ttff)
     log_total('#jw-diff', marks.jw_script_start, marks.jw_ttff)
+    save_in_local_storage()
+    window.log_averages()
   }
 
   const run_preroll_routine = async (id) => {
@@ -176,6 +178,88 @@
     log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
     log_diff('#jw-diff', marks.jw_player_start, marks.jw_ad_impression)
     log_total('#jw-diff', marks.jw_script_start, marks.jw_ad_impression)
+  }
+
+  const save_in_local_storage = () => {
+    const newRow = {
+      script_start: Math.round(marks.dm_script_start.startTime),
+      script_end: Math.round(marks.dm_script_end.startTime),
+      player_start: Math.round(marks.dm_player_start.startTime),
+      ttff: Math.round(marks.dm_ttff.startTime),
+    }
+
+    const existingData = localStorage.getItem('adless')
+
+    if (existingData) {
+      const array = JSON.parse(existingData)
+      array.push(newRow)
+      localStorage.setItem('adless', JSON.stringify(array))
+    } else {
+      const newArray = [newRow]
+      localStorage.setItem('adless', JSON.stringify(newArray))
+    }
+  }
+
+  window.log_averages = () => {
+    const adless = localStorage.getItem('adless')
+
+    if (adless) {
+      const array = JSON.parse(adless)
+
+      console.log('Existing data')
+      console.table(array)
+
+      const sums = array.reduce(
+        (acc, obj) => ({
+          script_start: acc.script_start + obj.script_start,
+          script_end: acc.script_end + obj.script_end,
+          player_start: acc.player_start + obj.player_start,
+          ttff: acc.ttff + obj.ttff,
+        }),
+        { script_start: 0, script_end: 0, player_start: 0, ttff: 0 }
+      )
+      console.log('Averages')
+      console.table({
+        script_start: Math.round(sums.script_start / array.length),
+        script_end: Math.round(sums.script_end / array.length),
+        player_start: Math.round(sums.player_start / array.length),
+        ttff: Math.round(sums.ttff / array.length),
+      })
+      const ctx = document.querySelector('#chart')
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [...array.keys()],
+          datasets: [
+            {
+              label: 'script_start',
+              data: array.map((obj) => obj.script_start),
+              borderColor: 'rgb(255, 99, 132)',
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              fill: false,
+              tension: 0.1,
+            },
+            {
+              label: 'script_end',
+              data: array.map((o) => o.script_end),
+              borderColor: 'rgb(54, 162, 235)',
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              fill: false,
+              tension: 0.1,
+            },
+            {
+              label: 'ttff',
+              data: array.map((o) => o.ttff),
+              borderColor: 'rgb(75, 192, 192)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              fill: false,
+              tension: 0.1,
+            },
+          ],
+        },
+      })
+    }
   }
 
   // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
