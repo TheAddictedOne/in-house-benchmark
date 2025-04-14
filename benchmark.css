@@ -1,3 +1,12 @@
+:root {
+  --dm-script-gauge-width: 0%;
+  --dm-metric-gauge-width: 0%;
+  --dm-total-gauge-width: 0%;
+  --jw-script-gauge-width: 0%;
+  --jw-metric-gauge-width: 0%;
+  --jw-total-gauge-width: 0%;
+}
+
 @font-face {
   font-family: 'ABCFavorit';
   font-weight: normal;
@@ -113,4 +122,82 @@ summary {
   display: block;
   width: 40px;
   height: 40px;
+}
+
+.metric-row {
+  display: flex;
+}
+.metric-col {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.metric-col-fixed-width {
+  width: 150px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.metric-left {
+  align-items: start;
+}
+.metric-center {
+  align-items: center;
+}
+.metric-right {
+  align-items: end;
+}
+.metric-item {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.gauge {
+  width: 100%;
+}
+.gauge-left {
+  justify-content: start;
+}
+.gauge-right {
+  justify-content: end;
+}
+.gauge::after {
+  display: block;
+  content: '';
+  border-radius: 15px;
+  height: 10px;
+  background: #800020;
+  border: 1px solid #555;
+  margin: 5px 0;
+  transition: width 0.8s ease-in-out;
+  background-color: #4caf50;
+}
+.gauge.red::after {
+  background-color: #f44336;
+}
+.gauge.green::after {
+}
+
+#dm-script-gauge::after {
+  width: var(--dm-script-gauge-width);
+}
+#dm-metric-gauge::after {
+  width: var(--dm-metric-gauge-width);
+}
+#dm-total-gauge::after {
+  width: var(--dm-total-gauge-width);
+}
+#jw-script-gauge::after {
+  width: var(--jw-script-gauge-width);
+}
+#jw-metric-gauge::after {
+  width: var(--jw-metric-gauge-width);
+}
+#jw-total-gauge::after {
+  width: var(--jw-total-gauge-width);
 }

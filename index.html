@@ -39,22 +39,67 @@
       </details>
     </section>
 
+    <section>
+      <div class="metric-row">
+        <div class="metric-col">
+          <h2>Dailymotion</h2>
+          <div id="dm-script-src" class="player-src"></div>
+        </div>
+        <div class="metric-col">
+          <h2>JW</h2>
+          <div id="jw-script-src" class="player-src"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <div id="dm-script-src" class="player-src"></div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-col metric-right">
+          <div id="dm-script-gauge" class="metric-item gauge gauge-right"></div>
+          <div id="dm-metric-gauge" class="metric-item gauge gauge-right"></div>
+          <div id="dm-total-gauge" class="metric-item gauge gauge-right"></div>
+        </div>
+        <div class="metric-col-fixed-width metric-right">
+          <div id="dm-script-duration" class="metric-item"></div>
+          <div id="dm-metric-duration" class="metric-item"></div>
+          <div id="dm-total-duration" class="metric-item"></div>
+        </div>
+        <div class="metric-col-fixed-width metric-center">
+          <div class="metric-item">Download script</div>
+          <div class="metric-item">Time to metric</div>
+          <div class="metric-item">Total</div>
+        </div>
+        <div class="metric-col-fixed-width metric-left">
+          <div id="jw-script-duration" class="metric-item"></div>
+          <div id="jw-metric-duration" class="metric-item"></div>
+          <div id="jw-total-duration" class="metric-item"></div>
+        </div>
+        <div class="metric-col metric-left">
+          <div id="jw-script-gauge" class="metric-item gauge gauge-left"></div>
+          <div id="jw-metric-gauge" class="metric-item gauge gauge-left"></div>
+          <div id="jw-total-gauge" class="metric-item gauge gauge-left"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-col">
+          <div id="dm-player" class="metric-col"></div>
+        </div>
+        <div class="metric-col">
+          <div id="jw-player" class="metric-col"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="players">
       <div class="player">
-        <h2>Dailymotion</h2>
-        <div id="dm-script-src" class="player-src"></div>
         <div id="dm-diff" class="logs perfs">
           <div class="loader"><img src="./loader.gif" /></div>
         </div>
-        <div id="dm-player"></div>
       </div>
       <div class="player">
-        <h2>JW</h2>
-        <div id="jw-script-src" class="player-src"></div>
         <div id="jw-diff" class="logs perfs">
           <div class="loader"><img src="./loader.gif" /></div>
         </div>
-        <div id="jw-player"></div>
       </div>
     </section>
 

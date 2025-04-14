@@ -139,18 +139,7 @@
 
   const log_diff = (id, start, end) => {
     const diff = Math.round(end.startTime - start.startTime)
-    document.querySelector(id).innerHTML += `<div class="log-row">
-      <span><code>${start.name}</code> to <code>${end.name}</code></span>
-      <span class="font-mono">${diff}ms</span>
-    </div>`
-  }
-
-  const log_total = (id, start, end) => {
-    const diff = Math.round(end.startTime - start.startTime)
-    document.querySelector(id).innerHTML += `<div class="log-row">
-      <span>Total</span>
-      <span class="font-mono">${diff}ms</span>
-    </div>`
+    document.querySelector(id).innerHTML += `${diff}ms`
   }
 
   const run_adless_routine = async ({ preset, id }) => {
@@ -164,20 +153,55 @@
   }
 
   const display_results = () => {
-    document.querySelector('#dm-diff').innerHTML = `<div class="log-header log-row">
-      <div>Measures</div>
-      <div>Durations</div>
-    </div>`
-    log_diff('#dm-diff', marks.dm_script_start, marks.dm_script_end)
-    log_diff('#dm-diff', marks.dm_player_start, marks.dm_metric_end)
-    log_total('#dm-diff', marks.dm_script_start, marks.dm_metric_end)
-    document.querySelector('#jw-diff').innerHTML = `<div class="log-header log-row">
-      <div>Measures</div>
-      <div>Durations</div>
-    </div>`
-    log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
-    log_diff('#jw-diff', marks.jw_player_start, marks.jw_metric_end)
-    log_total('#jw-diff', marks.jw_script_start, marks.jw_metric_end)
+    const dmScriptDuration = Math.round(
+      marks.dm_script_end.startTime - marks.dm_script_start.startTime
+    )
+    const dmMetricDuration = Math.round(
+      marks.dm_metric_end.startTime - marks.dm_player_start.startTime
+    )
+    const dmTotalDuration = Math.round(
+      marks.dm_metric_end.startTime - marks.dm_script_start.startTime
+    )
+    const jwScriptDuration = Math.round(
+      marks.jw_script_end.startTime - marks.jw_script_start.startTime
+    )
+    const jwMetricDuration = Math.round(
+      marks.jw_metric_end.startTime - marks.jw_player_start.startTime
+    )
+    const jwTotalDuration = Math.round(
+      marks.jw_metric_end.startTime - marks.jw_script_start.startTime
+    )
+    const max = Math.max(dmTotalDuration, jwTotalDuration)
+    document.querySelector('#dm-script-duration').innerHTML = `${dmScriptDuration}ms`
+    document.documentElement.style.setProperty(
+      '--dm-script-gauge-width',
+      `${Math.round((dmScriptDuration / max) * 100)}%`
+    )
+    document.querySelector('#dm-metric-duration').innerHTML = `${dmMetricDuration}ms`
+    document.documentElement.style.setProperty(
+      '--dm-metric-gauge-width',
+      `${Math.round((dmMetricDuration / max) * 100)}%`
+    )
+    document.querySelector('#dm-total-duration').innerHTML = `${dmTotalDuration}ms`
+    document.documentElement.style.setProperty(
+      '--dm-total-gauge-width',
+      `${Math.round((dmTotalDuration / max) * 100)}%`
+    )
+    document.querySelector('#jw-script-duration').innerHTML = `${jwScriptDuration}ms`
+    document.documentElement.style.setProperty(
+      '--jw-script-gauge-width',
+      `${Math.round((jwScriptDuration / max) * 100)}%`
+    )
+    document.querySelector('#jw-metric-duration').innerHTML = `${jwMetricDuration}ms`
+    document.documentElement.style.setProperty(
+      '--jw-metric-gauge-width',
+      `${Math.round((jwMetricDuration / max) * 100)}%`
+    )
+    document.querySelector('#jw-total-duration').innerHTML = `${jwTotalDuration}ms`
+    document.documentElement.style.setProperty(
+      '--jw-total-gauge-width',
+      `${Math.round((jwTotalDuration / max) * 100)}%`
+    )
     document.querySelector('#current-step').innerHTML = `Benchmark done ✔`
     document.querySelectorAll('.loader').forEach((node) => node.remove())
   }
