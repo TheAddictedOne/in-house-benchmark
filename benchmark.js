@@ -164,14 +164,22 @@
   }
 
   const display_results = () => {
+    document.querySelector('#dm-diff').innerHTML = `<div class="log-header log-row">
+      <div>Measures</div>
+      <div>Durations</div>
+    </div>`
     log_diff('#dm-diff', marks.dm_script_start, marks.dm_script_end)
     log_diff('#dm-diff', marks.dm_player_start, marks.dm_metric_end)
     log_total('#dm-diff', marks.dm_script_start, marks.dm_metric_end)
+    document.querySelector('#jw-diff').innerHTML = `<div class="log-header log-row">
+      <div>Measures</div>
+      <div>Durations</div>
+    </div>`
     log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
     log_diff('#jw-diff', marks.jw_player_start, marks.jw_metric_end)
     log_total('#jw-diff', marks.jw_script_start, marks.jw_metric_end)
-    document.querySelector('#loader').innerHTML = `<div>Benchmark done ✔</div>`
-    document.querySelector('#current-step').innerHTML = `See metrics`
+    document.querySelector('#current-step').innerHTML = `Benchmark done ✔`
+    document.querySelectorAll('.loader').forEach((node) => node.remove())
   }
 
   const run_preroll_routine = async ({ preset, id }) => {
@@ -207,7 +215,7 @@
 
     if (item) {
       const data = JSON.parse(item)
-      const ctx = document.querySelector('#chart')
+      const ctx = document.querySelector('#chart canvas')
       new Chart(ctx, {
         type: 'line',
         data: {

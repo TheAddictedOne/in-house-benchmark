@@ -11,6 +11,7 @@ body {
 }
 section {
   padding: 20px 0;
+  border-bottom: 1px solid #ccc;
 }
 section:nth-child(even) {
   background: #fafafa;
