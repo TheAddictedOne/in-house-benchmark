@@ -10,14 +10,15 @@
   const preset = params.get('preset') || 'adless'
   const id = params.get('id') || preset === 'adless' ? 'x136j6' : 'x15doe'
 
-  initAutoreload()
+  init()
   run()
   // ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
   // │                                                                                               │
   // │ Declarations                                                                                  │
   // │                                                                                               │
   // └───────────────────────────────────────────────────────────────────────────────────────────────┘
-  function initAutoreload() {
+  function init() {
+    // Autoreload on preset change
     const node = document.querySelector('#preset')
     node.value = preset
     node.addEventListener('change', () => {
@@ -25,6 +26,9 @@
       url.searchParams.set('preset', node.value)
       document.location.href = url
     })
+    // Init label
+    document.querySelector('#metric-label').innerHTML =
+      preset === 'adless' ? 'Time to TTFF' : 'Time to impression'
   }
 
   function saveTimestamp(name) {
@@ -157,44 +161,46 @@
   }
 
   function displayResults() {
-    const dmScriptDuration = timestamps.dm_script_end - timestamps.dm_script_start
-    const dmMetricDuration = timestamps.dm_metric_end - timestamps.dm_player_start
-    const dmTotalDuration = dmScriptDuration + dmMetricDuration
-    const jwScriptDuration = timestamps.jw_script_end - timestamps.jw_script_start
-    const jwMetricDuration = timestamps.jw_metric_end - timestamps.jw_player_start
-    const jwTotalDuration = jwScriptDuration + jwMetricDuration
-    const max = Math.max(dmTotalDuration, jwTotalDuration)
+    const metrics = [
+      {
+        node: '#dm-script-duration',
+        duration: timestamps.dm_script_end - timestamps.dm_script_start,
+        cssvar: '--dm-script-width',
+      },
+      {
+        node: '#dm-metric-duration',
+        duration: timestamps.dm_metric_end - timestamps.dm_player_start,
+        cssvar: '--dm-metric-width',
+      },
+      {
+        node: '#dm-total-duration',
+        duration: timestamps.dm_metric_end - timestamps.dm_script_start,
+        cssvar: '--dm-total-width',
+      },
+      {
+        node: '#jw-script-duration',
+        duration: timestamps.jw_script_end - timestamps.jw_script_start,
+        cssvar: '--jw-script-width',
+      },
+      {
+        node: '#jw-metric-duration',
+        duration: timestamps.jw_metric_end - timestamps.jw_player_start,
+        cssvar: '--jw-metric-width',
+      },
+      {
+        node: '#jw-total-duration',
+        duration: timestamps.jw_metric_end - timestamps.jw_script_start,
+        cssvar: '--jw-total-width',
+      },
+    ]
+    const max = Math.max(...metrics.map(({ duration }) => duration))
 
-    document.querySelector('#dm-script-duration').innerHTML = `${dmScriptDuration}ms`
-    document.documentElement.style.setProperty(
-      '--dm-script-width',
-      `${Math.round((dmScriptDuration / max) * 100)}%`
-    )
-    document.querySelector('#dm-metric-duration').innerHTML = `${dmMetricDuration}ms`
-    document.documentElement.style.setProperty(
-      '--dm-metric-width',
-      `${Math.round((dmMetricDuration / max) * 100)}%`
-    )
-    document.querySelector('#dm-total-duration').innerHTML = `${dmTotalDuration}ms`
-    document.documentElement.style.setProperty(
-      '--dm-total-width',
-      `${Math.round((dmTotalDuration / max) * 100)}%`
-    )
-    document.querySelector('#jw-script-duration').innerHTML = `${jwScriptDuration}ms`
-    document.documentElement.style.setProperty(
-      '--jw-script-width',
-      `${Math.round((jwScriptDuration / max) * 100)}%`
-    )
-    document.querySelector('#jw-metric-duration').innerHTML = `${jwMetricDuration}ms`
-    document.documentElement.style.setProperty(
-      '--jw-metric-width',
-      `${Math.round((jwMetricDuration / max) * 100)}%`
-    )
-    document.querySelector('#jw-total-duration').innerHTML = `${jwTotalDuration}ms`
-    document.documentElement.style.setProperty(
-      '--jw-total-width',
-      `${Math.round((jwTotalDuration / max) * 100)}%`
-    )
+    metrics.forEach(({ node, duration, cssvar }) => {
+      const width = `${Math.round((duration / max) * 100)}%`
+      document.querySelector(node).innerHTML = `${duration}ms`
+      document.documentElement.style.setProperty(cssvar, width)
+    })
+
     document.querySelector('#step').innerHTML = `Benchmark done ✔`
     document.querySelector('.loader').remove()
   }
@@ -204,7 +210,6 @@
       script: timestamps.dm_script_end - timestamps.dm_script_start,
       metric: timestamps.dm_metric_end - timestamps.dm_player_start,
     }
-    console.log(data)
 
     const item = localStorage.getItem(preset)
     const array = item ? JSON.parse(item) : []
@@ -224,7 +229,7 @@
           labels: [...data.keys()],
           datasets: [
             {
-              label: 'script latency',
+              label: 'Script latency',
               data: data.map((o) => o.script),
               borderColor: '#ff9800',
               backgroundColor: '#ff9800',
@@ -232,8 +237,7 @@
               tension: 0.1,
             },
             {
-              label:
-                preset === 'adless' ? 'player starts to ttff' : 'player starts to ad impression',
+              label: preset === 'adless' ? 'Time to TTFF' : 'Time to impression',
               data: data.map((o) => o.metric),
               borderColor: '#2196f3',
               backgroundColor: '#2196f3',

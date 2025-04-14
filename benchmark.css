@@ -122,8 +122,8 @@ summary {
   flex-shrink: 0;
   width: 100px;
 }
-.col-fix-150 {
-  width: 150px;
+.col-fix-200 {
+  width: 200px;
 }
 .col-align-left {
   align-items: start;
