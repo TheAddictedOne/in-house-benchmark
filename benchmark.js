@@ -57,7 +57,7 @@
       player.on(
         dailymotion.events.AD_IMPRESSION,
         () => {
-          save_mark('dm_ad_impression')
+          save_mark('dm_metric_end')
           setTimeout(player.pause, PLAY_DURATION)
           resolve()
         },
@@ -73,7 +73,7 @@
       player.on(
         dailymotion.events.VIDEO_PLAYING,
         () => {
-          save_mark('dm_ttff')
+          save_mark('dm_metric_end')
           setTimeout(player.pause, PLAY_DURATION)
           resolve()
         },
@@ -115,7 +115,7 @@
         },
       })
       player.once('adImpression', () => {
-        save_mark('jw_ad_impression')
+        save_mark('jw_metric_end')
         setTimeout(player.pause, PLAY_DURATION)
         resolve()
       })
@@ -130,7 +130,7 @@
         file: 'https://content.jwplatform.com/manifests/yp34SRmf.m3u8',
       })
       jwPlayer.once('firstFrame', () => {
-        save_mark('jw_ttff')
+        save_mark('jw_metric_end')
         setTimeout(jwPlayer.pause, PLAY_DURATION)
         resolve()
       })
@@ -158,14 +158,18 @@
     await start_dm_adless()
     await load_jw_script()
     await start_jw_adless()
-    log_diff('#dm-diff', marks.dm_script_start, marks.dm_script_end)
-    log_diff('#dm-diff', marks.dm_player_start, marks.dm_ttff)
-    log_total('#dm-diff', marks.dm_script_start, marks.dm_ttff)
-    log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
-    log_diff('#jw-diff', marks.jw_player_start, marks.jw_ttff)
-    log_total('#jw-diff', marks.jw_script_start, marks.jw_ttff)
     save_in_local_storage(preset)
     log_averages(preset)
+    display_results()
+  }
+
+  const display_results = () => {
+    log_diff('#dm-diff', marks.dm_script_start, marks.dm_script_end)
+    log_diff('#dm-diff', marks.dm_player_start, marks.dm_metric_end)
+    log_total('#dm-diff', marks.dm_script_start, marks.dm_metric_end)
+    log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
+    log_diff('#jw-diff', marks.jw_player_start, marks.jw_metric_end)
+    log_total('#jw-diff', marks.jw_script_start, marks.jw_metric_end)
     document.querySelector('#loader').innerHTML = `<div>Benchmark done ✔</div>`
     document.querySelector('#current-step').innerHTML = `See metrics`
   }
@@ -175,25 +179,15 @@
     await start_dm_preroll()
     await load_jw_script()
     await start_jw_preroll()
-    log_diff('#dm-diff', marks.dm_script_start, marks.dm_script_end)
-    log_diff('#dm-diff', marks.dm_player_start, marks.dm_ad_impression)
-    log_total('#dm-diff', marks.dm_script_start, marks.dm_ad_impression)
-    log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
-    log_diff('#jw-diff', marks.jw_player_start, marks.jw_ad_impression)
-    log_total('#jw-diff', marks.jw_script_start, marks.jw_ad_impression)
     save_in_local_storage(preset)
     log_averages(preset)
-    document.querySelector('#loader').innerHTML = `<div>Benchmark done ✔</div>`
-    document.querySelector('#current-step').innerHTML = `See metrics`
+    display_results()
   }
 
   const save_in_local_storage = (key) => {
     const newRow = {
       script: Math.round(marks.dm_script_end.startTime - marks.dm_script_start.startTime),
-      metric:
-        key === 'adless'
-          ? Math.round(marks.dm_ttff.startTime - marks.dm_player_start.startTime)
-          : Math.round(marks.dm_ad_impression.startTime - marks.dm_player_start.startTime),
+      metric: Math.round(marks.dm_metric_end.startTime - marks.dm_player_start.startTime),
     }
 
     const item = localStorage.getItem(key)
