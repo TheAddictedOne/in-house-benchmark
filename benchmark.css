@@ -85,6 +85,9 @@ summary {
   margin: 0 auto;
   width: 400px;
 }
+.perfs {
+  height: 160px;
+}
 .log-header {
   font-weight: bold;
   padding: 0 20px;

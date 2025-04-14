@@ -153,7 +153,7 @@
     </div>`
   }
 
-  const run_adless_routine = async (id) => {
+  const run_adless_routine = async ({ preset, id }) => {
     await load_dm_script(id || 'x136j6')
     await start_dm_adless()
     await load_jw_script()
@@ -164,13 +164,13 @@
     log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
     log_diff('#jw-diff', marks.jw_player_start, marks.jw_ttff)
     log_total('#jw-diff', marks.jw_script_start, marks.jw_ttff)
-    save_in_local_storage()
-    window.log_averages()
+    save_in_local_storage(preset)
+    log_averages(preset)
     document.querySelector('#loader').innerHTML = `<div>Benchmark done ✔</div>`
     document.querySelector('#current-step').innerHTML = `See metrics`
   }
 
-  const run_preroll_routine = async (id) => {
+  const run_preroll_routine = async ({ preset, id }) => {
     await load_dm_script(id || 'x15doe')
     await start_dm_preroll()
     await load_jw_script()
@@ -181,81 +181,57 @@
     log_diff('#jw-diff', marks.jw_script_start, marks.jw_script_end)
     log_diff('#jw-diff', marks.jw_player_start, marks.jw_ad_impression)
     log_total('#jw-diff', marks.jw_script_start, marks.jw_ad_impression)
+    save_in_local_storage(preset)
+    log_averages(preset)
+    document.querySelector('#loader').innerHTML = `<div>Benchmark done ✔</div>`
+    document.querySelector('#current-step').innerHTML = `See metrics`
   }
 
-  const save_in_local_storage = () => {
+  const save_in_local_storage = (key) => {
     const newRow = {
-      script_start: Math.round(marks.dm_script_start.startTime),
-      script_end: Math.round(marks.dm_script_end.startTime),
-      player_start: Math.round(marks.dm_player_start.startTime),
-      ttff: Math.round(marks.dm_ttff.startTime),
+      script: Math.round(marks.dm_script_end.startTime - marks.dm_script_start.startTime),
+      metric:
+        key === 'adless'
+          ? Math.round(marks.dm_ttff.startTime - marks.dm_player_start.startTime)
+          : Math.round(marks.dm_ad_impression.startTime - marks.dm_player_start.startTime),
     }
 
-    const existingData = localStorage.getItem('adless')
+    const item = localStorage.getItem(key)
 
-    if (existingData) {
-      const array = JSON.parse(existingData)
+    if (item) {
+      const array = JSON.parse(item)
       array.push(newRow)
-      localStorage.setItem('adless', JSON.stringify(array))
+      localStorage.setItem(key, JSON.stringify(array))
     } else {
       const newArray = [newRow]
-      localStorage.setItem('adless', JSON.stringify(newArray))
+      localStorage.setItem(key, JSON.stringify(newArray))
     }
   }
 
-  window.log_averages = () => {
-    const adless = localStorage.getItem('adless')
+  const log_averages = (key) => {
+    const item = localStorage.getItem(key)
 
-    if (adless) {
-      const array = JSON.parse(adless)
-
-      console.log('Existing data')
-      console.table(array)
-
-      const sums = array.reduce(
-        (acc, obj) => ({
-          script_start: acc.script_start + obj.script_start,
-          script_end: acc.script_end + obj.script_end,
-          player_start: acc.player_start + obj.player_start,
-          ttff: acc.ttff + obj.ttff,
-        }),
-        { script_start: 0, script_end: 0, player_start: 0, ttff: 0 }
-      )
-      console.log('Averages')
-      console.table({
-        script_start: Math.round(sums.script_start / array.length),
-        script_end: Math.round(sums.script_end / array.length),
-        player_start: Math.round(sums.player_start / array.length),
-        ttff: Math.round(sums.ttff / array.length),
-      })
+    if (item) {
+      const data = JSON.parse(item)
       const ctx = document.querySelector('#chart')
-
       new Chart(ctx, {
         type: 'line',
         data: {
-          labels: [...array.keys()],
+          labels: [...data.keys()],
           datasets: [
             {
-              label: 'script_start',
-              data: array.map((obj) => obj.script_start),
+              label: 'script latency',
+              data: data.map((o) => o.script),
               borderColor: 'rgb(255, 99, 132)',
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
               fill: false,
               tension: 0.1,
             },
             {
-              label: 'script_end',
-              data: array.map((o) => o.script_end),
+              label: key === 'adless' ? 'player starts to ttff' : 'player starts to ad impression',
+              data: data.map((o) => o.metric),
               borderColor: 'rgb(54, 162, 235)',
               backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              fill: false,
-              tension: 0.1,
-            },
-            {
-              label: 'ttff',
-              data: array.map((o) => o.ttff),
-              borderColor: 'rgb(75, 192, 192)',
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
               fill: false,
               tension: 0.1,
             },
@@ -278,10 +254,10 @@
 
   switch (preset) {
     case 'preroll':
-      run_preroll_routine(id)
+      run_preroll_routine({ preset, id })
       break
     case 'adless':
     default:
-      run_adless_routine(id)
+      run_adless_routine({ preset, id })
   }
 })()
