@@ -1,10 +1,10 @@
 :root {
-  --dm-script-gauge-width: 0%;
-  --dm-metric-gauge-width: 0%;
-  --dm-total-gauge-width: 0%;
-  --jw-metric-gauge-width: 0%;
-  --jw-script-gauge-width: 0%;
-  --jw-total-gauge-width: 0%;
+  --dm-script-width: 0%;
+  --dm-metric-width: 0%;
+  --dm-total-width: 0%;
+  --jw-metric-width: 0%;
+  --jw-script-width: 0%;
+  --jw-total-width: 0%;
 }
 * {
   box-sizing: border-box;
@@ -168,22 +168,22 @@ summary {
   transition: width 0.8s ease-in-out;
 }
 #dm-script-gauge::after {
-  width: var(--dm-script-gauge-width);
+  width: var(--dm-script-width);
 }
 #dm-metric-gauge::after {
-  width: var(--dm-metric-gauge-width);
+  width: var(--dm-metric-width);
 }
 #dm-total-gauge::after {
-  width: var(--dm-total-gauge-width);
+  width: var(--dm-total-width);
 }
 #jw-script-gauge::after {
-  width: var(--jw-script-gauge-width);
+  width: var(--jw-script-width);
 }
 #jw-metric-gauge::after {
-  width: var(--jw-metric-gauge-width);
+  width: var(--jw-metric-width);
 }
 #jw-total-gauge::after {
-  width: var(--jw-total-gauge-width);
+  width: var(--jw-total-width);
 }
 
 .loader {
