@@ -2,35 +2,43 @@
   --dm-script-gauge-width: 0%;
   --dm-metric-gauge-width: 0%;
   --dm-total-gauge-width: 0%;
-  --jw-script-gauge-width: 0%;
   --jw-metric-gauge-width: 0%;
+  --jw-script-gauge-width: 0%;
   --jw-total-gauge-width: 0%;
+}
+* {
+  box-sizing: border-box;
 }
 
 @font-face {
+  font-display: swap;
   font-family: 'ABCFavorit';
   font-weight: normal;
   src: url('https://static1.dmcdn.net/ABCFavorit-Regular.woff2') format('woff2');
-  font-display: swap;
 }
 
 body {
   font-family: ABCFavorit;
   margin: 0;
+  overflow-y: scroll;
 }
 section {
-  padding: 20px 0;
   border-bottom: 1px solid #ccc;
+  padding: 20px 0;
 }
 section:nth-child(even) {
   background: #fafafa;
 }
 h1 {
-  text-align: center;
   margin: 0;
+  text-align: center;
 }
 h2 {
   margin: 0 0 20px;
+  text-align: center;
+}
+h3 {
+  margin: 0;
   text-align: center;
 }
 code {
@@ -54,49 +62,31 @@ details {
 }
 summary {
   cursor: pointer;
+  height: 40px;
+  line-height: 40px;
 }
 
 .header {
+  align-items: center;
   background-color: black;
   color: white;
-  height: 80px;
   display: flex;
+  height: 40px;
   justify-content: center;
-  align-items: center;
 }
 
 .options {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 .option {
   height: 40px;
 }
 
-.players {
-  align-items: stretch;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-.player {
-  flex: 1;
-  padding: 0 10px;
-}
-.player-src {
-  display: flex;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  font-size: 10px;
-}
 .logs {
   margin: 0 auto;
   width: 400px;
-}
-.perfs {
-  height: 160px;
 }
 .log-header {
   font-weight: bold;
@@ -108,81 +98,75 @@ summary {
   height: 40px;
   justify-content: space-between;
 }
-.font-mono {
-  font-family: monospace;
-}
-.loader {
-  height: 40px;
+
+.row {
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
-  margin: 0 auto;
+  width: 100%;
 }
-.loader img {
-  display: block;
-  width: 40px;
+.col {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.col-1 {
+  flex: 1;
+}
+.col-grow {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+.col-fix {
+  flex-shrink: 0;
+  width: 100px;
+}
+.col-fix-150 {
+  width: 150px;
+}
+.col-align-left {
+  align-items: start;
+}
+.col-align-center {
+  align-items: center;
+}
+.col-align-right {
+  align-items: end;
+}
+.item {
+  align-items: center;
+  display: flex;
   height: 40px;
 }
 
-.metric-row {
-  display: flex;
-}
-.metric-col {
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-}
-.metric-col-fixed-width {
-  width: 150px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-}
-.metric-left {
-  align-items: start;
-}
-.metric-center {
+.script-src {
   align-items: center;
-}
-.metric-right {
-  align-items: end;
-}
-.metric-item {
+  display: flex;
+  font-size: 10px;
   height: 40px;
-  display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 .gauge {
   width: 100%;
 }
-.gauge-left {
+.gauge-align-left {
   justify-content: start;
 }
-.gauge-right {
+.gauge-align-right {
   justify-content: end;
 }
 .gauge::after {
-  display: block;
-  content: '';
+  background-color: #bae488;
+  border: 1px solid #999;
   border-radius: 15px;
+  content: '';
+  display: block;
   height: 10px;
-  background: #800020;
-  border: 1px solid #555;
   margin: 5px 0;
   transition: width 0.8s ease-in-out;
-  background-color: #4caf50;
 }
-.gauge.red::after {
-  background-color: #f44336;
-}
-.gauge.green::after {
-}
-
 #dm-script-gauge::after {
   width: var(--dm-script-gauge-width);
 }
@@ -200,4 +184,24 @@ summary {
 }
 #jw-total-gauge::after {
   width: var(--jw-total-gauge-width);
+}
+
+.loader {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  margin: 0 auto;
+}
+.loader img {
+  display: block;
+  height: 40px;
+  width: 40px;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+.font-mono {
+  font-family: monospace;
 }

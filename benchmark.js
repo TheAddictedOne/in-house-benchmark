@@ -18,7 +18,7 @@
   }
 
   const save_mark = (name) => {
-    document.querySelector('#current-step').innerHTML = `Saving <code>${name}</code> mark ...`
+    document.querySelector('#step').innerHTML = `Saving <code>${name}</code> mark ...`
     const mark = performance.mark(name)
     marks[name] = mark // Save mark in upper scope for later usage
     document.querySelector('#logs').innerHTML += `<div class="log-row">
@@ -202,7 +202,7 @@
       '--jw-total-gauge-width',
       `${Math.round((jwTotalDuration / max) * 100)}%`
     )
-    document.querySelector('#current-step').innerHTML = `Benchmark done ✔`
+    document.querySelector('#step').innerHTML = `Benchmark done ✔`
     document.querySelectorAll('.loader').forEach((node) => node.remove())
   }
 
@@ -248,16 +248,16 @@
             {
               label: 'script latency',
               data: data.map((o) => o.script),
-              borderColor: 'rgb(255, 99, 132)',
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: '#ff9800',
+              backgroundColor: '#ff9800',
               fill: false,
               tension: 0.1,
             },
             {
               label: key === 'adless' ? 'player starts to ttff' : 'player starts to ad impression',
               data: data.map((o) => o.metric),
-              borderColor: 'rgb(54, 162, 235)',
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: '#2196f3',
+              backgroundColor: '#2196f3',
               fill: false,
               tension: 0.1,
             },
